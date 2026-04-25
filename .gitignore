@@ -1,0 +1,67 @@
+# --- General ---
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Gradle ---
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- Kotlin / Java ---
+*.class
+*.jar
+*.war
+*.ear
+
+# --- Android ---
+local.properties
+*.apk
+*.ap_
+*.aab
+captures/
+.externalNativeBuild/
+.cxx/
+
+# --- Android Studio / IntelliJ ---
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# --- Keystore / Signing ---
+*.jks
+*.keystore
+*.pem
+
+# --- NDK ---
+obj/
+libs/
+
+# --- Room / SQLite ---
+# Database files (runtime artifacts — do NOT commit)
+*.db
+*.db-shm
+*.db-wal
+
+# --- Testing / Coverage ---
+/test-output/
+/coverage/
+*.ec
+
+# --- Firebase / Google Services ---
+google-services.json
+firebase*.json
+
+# --- Environment / Secrets ---
+.env
+.env.*
+*.properties
+!gradle.properties
+
+# --- Misc ---
+*.orig
+*.rej
