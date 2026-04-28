@@ -18,7 +18,7 @@ interface NoteTagDAO {
     suspend fun removeTagFromNote(crossRef: NoteTagCrossRef)
 
     @Query("DELETE FROM tb_note_tag_cross_refs WHERE noteId = :noteId AND tagId = :tagId")
-    suspend fun detachTag(noteId: String): Flow<List<NoteTagCrossRef>>
+    suspend fun detachTag(noteId: String, tagId: String)
 
     @Query("SELECT * FROM tb_note_tag_cross_refs WHERE noteId = :noteId")
     fun getTagsForNote(noteId: String): Flow<List<NoteTagCrossRef>>

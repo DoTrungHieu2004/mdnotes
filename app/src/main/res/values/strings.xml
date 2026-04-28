@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MDNotes</string>
+
+    <!-- Note revision -->
+    <string name="initial_note_version">Initial version</string>
+    <string name="auto_save_note">Auto-save</string>
 </resources>
