@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import com.hieu10.mdnotes.di.LocalAppContainer
+import com.hieu10.mdnotes.ui.screens.MainScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +27,7 @@ fun AppRoot() {
         LocalAppContainer provides app.container
     ) {
         MDNotesTheme {
-
+            MainScreen()
         }
     }
 }
