@@ -18,8 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Label
 import androidx.compose.material.icons.automirrored.filled.NoteAdd
 import androidx.compose.material.icons.filled.CreateNewFolder
-import androidx.compose.material.icons.filled.Label
-import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,16 +32,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hieu10.mdnotes.R
+import com.hieu10.mdnotes.di.LocalAppContainer
 import com.hieu10.mdnotes.ui.components.BottomNavBar
 import com.hieu10.mdnotes.ui.components.CreateActionButton
 import com.hieu10.mdnotes.ui.navigation.BottomNavTab
+import com.hieu10.mdnotes.ui.screens.fragments.HomeFragment
 import com.hieu10.mdnotes.ui.screens.placeholders.PlaceholderScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.HomeViewModel
 
 @Composable
 fun MainScreen() {
     var selectedTab by remember { mutableStateOf(BottomNavTab.HOME) }
     var fabExpanded by remember { mutableStateOf(false) }
+    val container = LocalAppContainer.current
 
     Scaffold(
         bottomBar = {
@@ -60,7 +62,21 @@ fun MainScreen() {
         ) {
             // ── Page content ─────────────────
             when (selectedTab) {
-                BottomNavTab.HOME -> PlaceholderScreen(title = "Home")
+                BottomNavTab.HOME -> {
+                    val homeVM = remember {
+                        HomeViewModel(
+                            noteRepository = container.noteRepository,
+                            folderRepository = container.folderRepository
+                        )
+                    }
+
+                    HomeFragment(
+                        viewModel = homeVM,
+                        onNoteClick = { noteId -> /* navigate to note */ },
+                        onSearchClick = { /* navigate to search */ },
+                        onNewNoteClick = { /* handle create */ }
+                    )
+                }
                 BottomNavTab.FOLDERS_TAGS -> PlaceholderScreen(title = "Folders & tags")
                 BottomNavTab.CALENDAR -> PlaceholderScreen(title = "Calendar")
                 BottomNavTab.PROFILE_SETTINGS -> PlaceholderScreen(title = "Profile / Settings")

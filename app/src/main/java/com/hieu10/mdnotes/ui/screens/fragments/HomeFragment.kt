@@ -25,12 +25,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.sample.homeState
 import com.hieu10.mdnotes.sample.homeStateEmpty
@@ -42,14 +44,28 @@ import com.hieu10.mdnotes.ui.states.NoteWithMeta
 import com.hieu10.mdnotes.ui.states.SortOrder
 import com.hieu10.mdnotes.ui.theme.LocalSemanticColors
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.HomeViewModel
 
 @Composable
 fun HomeFragment(
+    viewModel: HomeViewModel,
     onNoteClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onNewNoteClick: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    HomeContent(
+        state = state,
+        onNoteClick = onNoteClick,
+        onArchiveNote = viewModel::archiveNote,
+        onTrashNote = viewModel::trashNote,
+        onTogglePinNote = viewModel::togglePin,
+        onToggleFavourite = viewModel::toggleFavourite,
+        onSortChange = viewModel::setSortOrder,
+        onSearchClick = onSearchClick,
+        onNewNoteClick = onNewNoteClick
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
