@@ -31,18 +31,21 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.di.LocalAppContainer
 import com.hieu10.mdnotes.ui.components.BottomNavBar
 import com.hieu10.mdnotes.ui.components.CreateActionButton
 import com.hieu10.mdnotes.ui.navigation.BottomNavTab
+import com.hieu10.mdnotes.ui.navigation.Screen
 import com.hieu10.mdnotes.ui.screens.fragments.HomeFragment
 import com.hieu10.mdnotes.ui.screens.placeholders.PlaceholderScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 import com.hieu10.mdnotes.viewmodel.HomeViewModel
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf(BottomNavTab.HOME) }
     var fabExpanded by remember { mutableStateOf(false) }
     val container = LocalAppContainer.current
@@ -72,9 +75,13 @@ fun MainScreen() {
 
                     HomeFragment(
                         viewModel = homeVM,
-                        onNoteClick = { noteId -> /* navigate to note */ },
+                        onNoteClick = { noteId ->
+                            navController.navigate(Screen.NoteEditor.createRoute(noteId))
+                        },
                         onSearchClick = { /* navigate to search */ },
-                        onNewNoteClick = { /* handle create */ }
+                        onNewNoteClick = {
+                            navController.navigate(Screen.NoteEditor.createRoute("new"))
+                        }
                     )
                 }
                 BottomNavTab.FOLDERS_TAGS -> PlaceholderScreen(title = "Folders & tags")
@@ -107,7 +114,7 @@ fun MainScreen() {
                         icon = Icons.AutoMirrored.Filled.NoteAdd,
                         label = stringResource(id = R.string.create_action_note),
                         onClick = {
-                            /* TODO: start note creation */
+                            navController.navigate(Screen.NoteEditor.createRoute("new"))
                             fabExpanded = false
                         }
                     )
@@ -138,7 +145,7 @@ fun MainScreen() {
 @Composable
 private fun PreviewScreenLight() {
     MDNotesTheme(darkTheme = false) {
-        MainScreen()
+        MainScreen(navController = rememberNavController())
     }
 }
 
@@ -146,6 +153,6 @@ private fun PreviewScreenLight() {
 @Composable
 private fun PreviewScreenDark() {
     MDNotesTheme(darkTheme = true) {
-        MainScreen()
+        MainScreen(navController = rememberNavController())
     }
 }
