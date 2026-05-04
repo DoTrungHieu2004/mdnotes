@@ -1,5 +1,6 @@
-package com.hieu10.mdnotes.sample
+package com.hieu10.mdnotes.sample.states
 
+import com.hieu10.mdnotes.sample.data.singleNoteSample
 import com.hieu10.mdnotes.ui.states.NoteEditorUIState
 
 val noteEditorState = NoteEditorUIState(

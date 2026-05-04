@@ -1,5 +1,6 @@
-package com.hieu10.mdnotes.sample
+package com.hieu10.mdnotes.sample.states
 
+import com.hieu10.mdnotes.sample.data.noteSamples
 import com.hieu10.mdnotes.ui.states.HomeState
 import com.hieu10.mdnotes.ui.states.NoteWithMeta
 import com.hieu10.mdnotes.ui.states.SortOrder

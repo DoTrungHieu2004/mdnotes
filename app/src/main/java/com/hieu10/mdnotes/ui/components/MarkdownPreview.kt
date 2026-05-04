@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.hieu10.mdnotes.sample.singleNoteSample
+import com.hieu10.mdnotes.sample.data.singleNoteSample
 import com.hieu10.mdnotes.ui.theme.LocalMarkdownColors
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 import io.noties.markwon.Markwon

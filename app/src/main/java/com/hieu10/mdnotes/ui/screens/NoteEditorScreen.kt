@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
-import com.hieu10.mdnotes.sample.noteEditorState
+import com.hieu10.mdnotes.sample.states.noteEditorState
 import com.hieu10.mdnotes.ui.components.MarkdownPreview
 import com.hieu10.mdnotes.ui.components.bar.MarkdownFormattingToolbar
 import com.hieu10.mdnotes.ui.components.bar.NoteMetadataBar

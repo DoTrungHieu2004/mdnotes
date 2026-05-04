@@ -1,4 +1,4 @@
-package com.hieu10.mdnotes.ui.components
+package com.hieu10.mdnotes.ui.components.bar
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState

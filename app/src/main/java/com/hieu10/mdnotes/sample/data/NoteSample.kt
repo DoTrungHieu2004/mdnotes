@@ -1,4 +1,4 @@
-package com.hieu10.mdnotes.sample
+package com.hieu10.mdnotes.sample.data
 
 import com.hieu10.mdnotes.db.models.Note
 import java.util.UUID

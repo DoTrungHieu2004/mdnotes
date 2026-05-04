@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hieu10.mdnotes.db.models.Note
-import com.hieu10.mdnotes.sample.singleNoteSample
+import com.hieu10.mdnotes.sample.data.singleNoteSample
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 
 @Composable

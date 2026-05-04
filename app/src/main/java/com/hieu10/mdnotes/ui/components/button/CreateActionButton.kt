@@ -1,4 +1,4 @@
-package com.hieu10.mdnotes.ui.components
+package com.hieu10.mdnotes.ui.components.button
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons

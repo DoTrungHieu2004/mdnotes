@@ -34,8 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
-import com.hieu10.mdnotes.sample.homeState
-import com.hieu10.mdnotes.sample.homeStateEmpty
+import com.hieu10.mdnotes.sample.states.homeState
+import com.hieu10.mdnotes.sample.states.homeStateEmpty
 import com.hieu10.mdnotes.ui.components.card.NoteCard
 import com.hieu10.mdnotes.ui.components.card.SwipeableNoteCard
 import com.hieu10.mdnotes.ui.components.states.EmptyNoteState

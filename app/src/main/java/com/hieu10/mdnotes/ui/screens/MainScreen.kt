@@ -35,8 +35,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.di.LocalAppContainer
-import com.hieu10.mdnotes.ui.components.BottomNavBar
-import com.hieu10.mdnotes.ui.components.CreateActionButton
+import com.hieu10.mdnotes.ui.components.bar.BottomNavBar
+import com.hieu10.mdnotes.ui.components.button.CreateActionButton
 import com.hieu10.mdnotes.ui.navigation.BottomNavTab
 import com.hieu10.mdnotes.ui.navigation.Screen
 import com.hieu10.mdnotes.ui.screens.fragments.HomeFragment

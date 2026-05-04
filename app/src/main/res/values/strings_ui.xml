@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">MDNotes</string>
+
+    <!-- Content description -->
+    <string name="cd_create">Create</string>
+    <string name="cd_search">Search</string>
+    <string name="cd_bold">Bold</string>
+    <string name="cd_italic">Italic</string>
+    <string name="cd_heading">Heading</string>
+    <string name="cd_strikethrough">Strikethrough</string>
+    <string name="cd_list">List</string>
+    <string name="cd_link">Link</string>
+    <string name="cd_image">Image</string>
+    <string name="cd_attachment">Attachment</string>
+    <string name="cd_code">Code</string>
+    <string name="cd_preview">Preview</string>
+    <string name="cd_add_reminder">Add reminder</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_unfavourite">Unfavourite</string>
+    <string name="cd_favourite">Favourite</string>
+    <string name="cd_unlock">Unlock</string>
+    <string name="cd_lock">Lock</string>
+    <string name="cd_more">More</string>
+
+    <!-- Create action -->
+    <string name="create_action_note">Note</string>
+    <string name="create_action_folder">Folder</string>
+    <string name="create_action_tag">Tag</string>
+
+    <!-- Bottom nav labels -->
+    <string name="nav_home">Home</string>
+    <string name="nav_folders">Folders &amp; tags</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Dropdown labels -->
+    <string name="dropdown_sort_last_modified">Last modified</string>
+    <string name="dropdown_sort_created_date">Created date</string>
+    <string name="dropdown_sort_ascending">Title A-Z</string>
+    <string name="dropdown_sort_descending">Title Z-A</string>
+    <string name="dropdown_revision_history">Revision history</string>
+    <string name="dropdown_note_info">Note info</string>
+    <string name="dropdown_archive">Archive</string>
+    <string name="dropdown_move_to_trash">Move to trash</string>
+
+    <!-- Button texts -->
+    <string name="btn_create_note">Create note</string>
+
+    <!-- Section titles -->
+    <string name="section_pinned_notes">Pinned</string>
+    <string name="section_all_notes">All notes</string>
+
+    <!-- Input hints -->
+    <string name="hint_note_title">Note title…</string>
+    <string name="hint_note_content">Start writing in Markdown…</string>
+
+    <!-- Note item labels -->
+    <string name="note_untitled">Untitled</string>
+    <string name="note_no_content">No additional content</string>
+    <string name="note_no_folder">No folder</string>
+    <string name="note_word_count">%1$d words</string>
+    <string name="note_link_count">%1$d links</string>
+
+    <!-- Empty states -->
+    <string name="note_empty_state_title">No notes yet</string>
+    <string name="note_empty_state_description">Tap the button below or the + button to create your first note.</string>
+</resources>
