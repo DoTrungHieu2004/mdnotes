@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,8 +15,9 @@ import androidx.navigation.navArgument
 import com.hieu10.mdnotes.di.LocalAppContainer
 import com.hieu10.mdnotes.ui.navigation.Screen
 import com.hieu10.mdnotes.ui.screens.MainScreen
-import com.hieu10.mdnotes.ui.screens.placeholders.PlaceholderScreen
+import com.hieu10.mdnotes.ui.screens.NoteEditorScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.NoteEditorViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +49,21 @@ fun AppRoot() {
                     arguments = listOf(navArgument("noteId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val noteId = backStackEntry.arguments?.getString("noteId") ?: return@composable
-                    // Placeholder for NoteEditorScreen
-                    PlaceholderScreen("Note Editor: $noteId")
+                    val container = LocalAppContainer.current
+                    val viewModel = remember(noteId) {
+                        NoteEditorViewModel(
+                            noteId = noteId,
+                            noteRepository = container.noteRepository,
+                            folderRepository = container.folderRepository,
+                            tagRepository = container.tagRepository
+                        )
+                    }
+
+                    NoteEditorScreen(
+                        noteId = noteId,
+                        viewModel = viewModel,
+                        onBack = { navController.popBackStack() }
+                    )
                 }
             }
         }

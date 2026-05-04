@@ -48,4 +48,6 @@ class TagRepository(
     }
 
     fun getTagsForNote(noteId: String): Flow<List<NoteTagCrossRef>> = noteTagDAO.getTagsForNote(noteId)
+
+    fun getTagsForNoteDirect(noteId: String): Flow<List<Tag>> = tagDAO.getTagsForNoteDirect(noteId)
 }

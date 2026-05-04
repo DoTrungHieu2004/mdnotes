@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.sample.noteEditorState
 import com.hieu10.mdnotes.ui.components.MarkdownPreview
@@ -45,13 +46,44 @@ import com.hieu10.mdnotes.ui.theme.LocalMarkdownColors
 import com.hieu10.mdnotes.ui.theme.LocalMarkdownTypography
 import com.hieu10.mdnotes.ui.theme.LocalSemanticColors
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.NoteEditorViewModel
 
 @Composable
 fun NoteEditorScreen(
     noteId: String,
+    viewModel: NoteEditorViewModel,
     onBack: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    NoteEditorContent(
+        state = state,
+        onBack = {
+            // auto-save triggered by ViewModel before navigating back
+            viewModel.autoSave()
+            onBack()
+        },
+        onTitleChange = viewModel::onTitleChanged,
+        onContentChange = viewModel::onContentChanged,
+        onTogglePin = viewModel::togglePin,
+        onToggleFavourite = viewModel::toggleFavourite,
+        onToggleLocked = viewModel::toggleLocked,
+        onOverflowAction = viewModel::onOverflowAction,
+        onBold = viewModel::insertBold,
+        onItalic = viewModel::insertItalic,
+        onHeading = viewModel::insertHeading,
+        onStrikethrough = viewModel::insertStrikethrough,
+        onBulletList = viewModel::insertBulletList,
+        onLink = viewModel::insertLink,
+        onImage = viewModel::insertImage,
+        onAttachment = viewModel::insertAttachment,
+        onCodeBlock = viewModel::insertCodeBlock,
+        onTogglePreview = viewModel::togglePreview,
+        onTagsClick = { /* navigate to tag picker */ },
+        onFolderClick = { /* navigate to folder picker */ },
+        onLinksClick = { /* navigate to links screen */ },
+        onAddReminder = { /* open reminder dialog */ }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

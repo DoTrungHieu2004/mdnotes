@@ -41,4 +41,14 @@ interface TagDAO {
         ORDER BY tb_notes.updatedAt DESC
     """)
     fun getNotesByTagId(tagId: String): Flow<List<Note>>
+
+    /**
+     * Get all tags attached to a note.
+     */
+    @Query("""
+        SELECT tb_tags.* FROM tb_tags
+        INNER JOIN tb_note_tag_cross_refs ON tb_tags.tagId = tb_note_tag_cross_refs.tagId
+        WHERE tb_note_tag_cross_refs.noteId = :noteId
+    """)
+    fun getTagsForNoteDirect(noteId: String): Flow<List<Tag>>
 }
