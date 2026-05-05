@@ -27,6 +27,13 @@
     <string name="create_action_folder">Folder</string>
     <string name="create_action_tag">Tag</string>
 
+    <!-- App bar titles -->
+    <string name="app_bar_folders_tags">Folders &amp; tags</string>
+
+    <!-- Tab row titles -->
+    <string name="tab_row_folders">Folders</string>
+    <string name="tab_row_tags">Tags</string>
+
     <!-- Bottom nav labels -->
     <string name="nav_home">Home</string>
     <string name="nav_folders">Folders &amp; tags</string>
@@ -42,9 +49,14 @@
     <string name="dropdown_note_info">Note info</string>
     <string name="dropdown_archive">Archive</string>
     <string name="dropdown_move_to_trash">Move to trash</string>
+    <string name="dropdown_rename">Rename</string>
+    <string name="dropdown_change_color">Change color</string>
+    <string name="dropdown_delete">Delete</string>
 
     <!-- Button texts -->
     <string name="btn_create_note">Create note</string>
+    <string name="btn_create_folder">Create folder</string>
+    <string name="btn_create_tag">Create tag</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
@@ -61,7 +73,14 @@
     <string name="note_word_count">%1$d words</string>
     <string name="note_link_count">%1$d links</string>
 
+    <!-- Folder card labels -->
+    <string name="folder_note_count">%1$d notes</string>
+
     <!-- Empty states -->
     <string name="note_empty_state_title">No notes yet</string>
     <string name="note_empty_state_description">Tap the button below or the + button to create your first note.</string>
+    <string name="folder_empty_state_title">No folders yet</string>
+    <string name="folder_empty_state_description">Tap the + button to create your first folder.</string>
+    <string name="tag_empty_state_title">No tags yet</string>
+    <string name="tag_empty_state_description">Tap the + button to create your first tag.</string>
 </resources>
