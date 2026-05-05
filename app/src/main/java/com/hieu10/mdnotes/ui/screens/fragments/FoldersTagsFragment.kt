@@ -17,11 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.sample.states.foldersState
 import com.hieu10.mdnotes.sample.states.tagsState
@@ -32,13 +34,29 @@ import com.hieu10.mdnotes.ui.components.states.EmptyTagsState
 import com.hieu10.mdnotes.ui.states.FoldersTagsTab
 import com.hieu10.mdnotes.ui.states.FolderTagsUIState
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.FoldersTagsViewModel
 
 @Composable
 fun FoldersTagsFragment(
+    viewModel: FoldersTagsViewModel,
     onFolderClick: (String) -> Unit,
     onTagClick: (String) -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    FoldersTagsContent(
+        state = state,
+        onTabSelected = viewModel::onTabSelected,
+        onFolderClick = onFolderClick,
+        onFolderRename = viewModel::renameFolder,
+        onFolderChangeColor = viewModel::changeFolderColor,
+        onFolderDelete = viewModel::deleteFolder,
+        onTagClick = onTagClick,
+        onTagRename = viewModel::renameTag,
+        onTagDelete = viewModel::deleteTag,
+        onCreateFolder = viewModel::showCreateFolderDialog,
+        onCreateTag = viewModel::showCreateTagDialog
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,7 +95,7 @@ private fun FoldersTagsContent(
                 )
                 Tab(
                     selected = state.selectedTab == FoldersTagsTab.TAGS,
-                    onClick = { onTabSelected(FoldersTagsTab.FOLDERS) },
+                    onClick = { onTabSelected(FoldersTagsTab.TAGS) },
                     text = { Text(text = stringResource(id = R.string.tab_row_tags)) }
                 )
             }
@@ -98,7 +116,7 @@ private fun FoldersTagsContent(
                             LazyColumn(
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                             ) {
-                                items(state.folders, key = { it.first.id }) { (folder, count ) ->
+                                items(items = state.folders, key = { (folder, _) -> folder.id }) { (folder, count) ->
                                     FolderCard(
                                         folder = folder,
                                         noteCount = count,
@@ -118,7 +136,7 @@ private fun FoldersTagsContent(
                             LazyColumn(
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                             ) {
-                                items(state.tags, key = { it.first.tagId }) { (tag, count ) ->
+                                items(items = state.tags, key = { (tag, _) -> tag.tagId }) { (tag, count) ->
                                     TagCard(
                                         tag = tag,
                                         noteCount = count,

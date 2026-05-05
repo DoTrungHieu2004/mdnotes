@@ -39,9 +39,11 @@ import com.hieu10.mdnotes.ui.components.bar.BottomNavBar
 import com.hieu10.mdnotes.ui.components.button.CreateActionButton
 import com.hieu10.mdnotes.ui.navigation.BottomNavTab
 import com.hieu10.mdnotes.ui.navigation.Screen
+import com.hieu10.mdnotes.ui.screens.fragments.FoldersTagsFragment
 import com.hieu10.mdnotes.ui.screens.fragments.HomeFragment
 import com.hieu10.mdnotes.ui.screens.placeholders.PlaceholderScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.FoldersTagsViewModel
 import com.hieu10.mdnotes.viewmodel.HomeViewModel
 
 @Composable
@@ -84,7 +86,24 @@ fun MainScreen(navController: NavController) {
                         }
                     )
                 }
-                BottomNavTab.FOLDERS_TAGS -> PlaceholderScreen(title = "Folders & tags")
+                BottomNavTab.FOLDERS_TAGS -> {
+                    val viewModel = remember {
+                        FoldersTagsViewModel(
+                            folderRepository = container.folderRepository,
+                            tagRepository = container.tagRepository
+                        )
+                    }
+
+                    FoldersTagsFragment(
+                        viewModel = viewModel,
+                        onFolderClick = { folderId ->
+                            // Navigate to notes by folder (future)
+                        },
+                        onTagClick = { tagId ->
+                            // Navigate to notes by tag (future)
+                        }
+                    )
+                }
                 BottomNavTab.CALENDAR -> PlaceholderScreen(title = "Calendar")
                 BottomNavTab.PROFILE_SETTINGS -> PlaceholderScreen(title = "Profile / Settings")
             }

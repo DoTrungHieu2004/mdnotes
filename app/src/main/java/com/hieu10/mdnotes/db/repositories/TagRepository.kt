@@ -5,6 +5,7 @@ import com.hieu10.mdnotes.db.dao.TagDAO
 import com.hieu10.mdnotes.db.models.Note
 import com.hieu10.mdnotes.db.models.NoteTagCrossRef
 import com.hieu10.mdnotes.db.models.Tag
+import com.hieu10.mdnotes.db.models.TagWithNoteCount
 import kotlinx.coroutines.flow.Flow
 
 class TagRepository(
@@ -50,4 +51,6 @@ class TagRepository(
     fun getTagsForNote(noteId: String): Flow<List<NoteTagCrossRef>> = noteTagDAO.getTagsForNote(noteId)
 
     fun getTagsForNoteDirect(noteId: String): Flow<List<Tag>> = tagDAO.getTagsForNoteDirect(noteId)
+
+    fun getTagsWithNoteCount(): Flow<List<TagWithNoteCount>> = tagDAO.getTagsWithNoteCount()
 }

@@ -2,6 +2,7 @@ package com.hieu10.mdnotes.db.repositories
 
 import com.hieu10.mdnotes.db.dao.FolderDAO
 import com.hieu10.mdnotes.db.models.Folder
+import com.hieu10.mdnotes.db.models.FolderWithNoteCount
 import kotlinx.coroutines.flow.Flow
 
 class FolderRepository(private val folderDAO: FolderDAO) {
@@ -38,4 +39,6 @@ class FolderRepository(private val folderDAO: FolderDAO) {
         // Notes inside will have folderId set to NULL (ForeignKey.SET_NULL)
         folderDAO.deleteFolder(folder)
     }
+
+    fun getFoldersWithNoteCount(): Flow<List<FolderWithNoteCount>> = folderDAO.getFoldersWithNoteCount()
 }

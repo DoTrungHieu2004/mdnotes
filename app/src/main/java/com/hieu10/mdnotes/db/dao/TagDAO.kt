@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.hieu10.mdnotes.db.models.Note
 import com.hieu10.mdnotes.db.models.Tag
+import com.hieu10.mdnotes.db.models.TagWithNoteCount
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -51,4 +52,19 @@ interface TagDAO {
         WHERE tb_note_tag_cross_refs.noteId = :noteId
     """)
     fun getTagsForNoteDirect(noteId: String): Flow<List<Tag>>
+
+    /**
+     * Count the number of notes tagged with a specific tag.
+     */
+    @Query("""
+        SELECT tb_tags.*, COUNT(tb_notes.id) AS noteCount
+        FROM tb_tags
+        LEFT JOIN tb_note_tag_cross_refs ON tb_tags.tagId = tb_note_tag_cross_refs.tagId
+        LEFT JOIN tb_notes ON tb_notes.id = tb_note_tag_cross_refs.noteId
+            AND tb_notes.isTrashed = 0
+            AND tb_notes.isArchived = 0
+        GROUP BY tb_tags.tagId
+        ORDER BY tb_tags.tagName ASC
+    """)
+    fun getTagsWithNoteCount(): Flow<List<TagWithNoteCount>>
 }

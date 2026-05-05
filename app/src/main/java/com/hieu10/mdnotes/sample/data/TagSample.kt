@@ -8,7 +8,7 @@ val singleTagSample = Tag(
     tagName = "Sample"
 )
 
-val sampleTags = listOf(
+val tagSamples = listOf(
     Tag(tagName = "Urgent"),
     Tag(tagName = "Draft"),
     Tag(tagName = "Review-Required"),
