@@ -1,7 +1,7 @@
 package com.hieu10.mdnotes.ui.states
 
 data class NotesByTagUIState(
-    val tagName: String = "",
+    val tagName: Any = "",
     val pinnedNotes: List<NoteWithMeta> = emptyList(),
     val allNotes: List<NoteWithMeta> = emptyList(),
     val isLoading: Boolean = true,

@@ -28,6 +28,9 @@ interface FolderDAO {
     @Query("SELECT * FROM tb_folders WHERE id = :folderId")
     suspend fun getFolderById(folderId: String): Folder?
 
+    @Query("SELECT * FROM tb_folders WHERE id = :folderId")
+    fun getFolderByIdFlow(folderId: String): Flow<Folder?>
+
     @Query("SELECT * FROM tb_folders WHERE name = :name LIMIT 1")
     suspend fun getFolderByName(name: String): Folder?
 

@@ -5,4 +5,8 @@
     <string name="auto_save_note">Auto-save</string>
     <string name="saved">Saved</string>
     <string name="unsaved">Unsaved</string>
+
+    <!-- Unknown names -->
+    <string name="unknown_folder">Unknown folder</string>
+    <string name="unknown_tag">Unknown tag</string>
 </resources>

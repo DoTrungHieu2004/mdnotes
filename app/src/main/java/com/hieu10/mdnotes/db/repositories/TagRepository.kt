@@ -53,4 +53,8 @@ class TagRepository(
     fun getTagsForNoteDirect(noteId: String): Flow<List<Tag>> = tagDAO.getTagsForNoteDirect(noteId)
 
     fun getTagsWithNoteCount(): Flow<List<TagWithNoteCount>> = tagDAO.getTagsWithNoteCount()
+
+    fun getTagByIdFlow(tagId: String): Flow<Tag?> = tagDAO.getTagByIdFlow(tagId)
+
+    fun getNotesByTagIdFlow(tagId: String): Flow<List<Note>> = tagDAO.getNotesByTagId(tagId)
 }

@@ -97,10 +97,10 @@ fun MainScreen(navController: NavController) {
                     FoldersTagsFragment(
                         viewModel = viewModel,
                         onFolderClick = { folderId ->
-                            // Navigate to notes by folder (future)
+                            navController.navigate(Screen.NotesByFolder.createRoute(folderId))
                         },
                         onTagClick = { tagId ->
-                            // Navigate to notes by tag (future)
+                            navController.navigate(Screen.NotesByTag.createRoute(tagId))
                         }
                     )
                 }

@@ -67,4 +67,7 @@ interface TagDAO {
         ORDER BY tb_tags.tagName ASC
     """)
     fun getTagsWithNoteCount(): Flow<List<TagWithNoteCount>>
+
+    @Query("SELECT * FROM tb_tags WHERE tagId = :tagId")
+    fun getTagByIdFlow(tagId: String): Flow<Tag?>
 }

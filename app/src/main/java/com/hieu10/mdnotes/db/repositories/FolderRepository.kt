@@ -41,4 +41,6 @@ class FolderRepository(private val folderDAO: FolderDAO) {
     }
 
     fun getFoldersWithNoteCount(): Flow<List<FolderWithNoteCount>> = folderDAO.getFoldersWithNoteCount()
+
+    fun getFolderByIdFlow(folderId: String): Flow<Folder?> = folderDAO.getFolderByIdFlow(folderId)
 }

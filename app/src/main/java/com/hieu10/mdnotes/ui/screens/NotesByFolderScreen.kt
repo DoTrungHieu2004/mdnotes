@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.compositeOver
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.sample.states.notesByFolderState
 import com.hieu10.mdnotes.sample.states.notesByFolderEmptyState
@@ -44,16 +46,31 @@ import com.hieu10.mdnotes.ui.states.NotesByFolderUIState
 import com.hieu10.mdnotes.ui.states.SortOrder
 import com.hieu10.mdnotes.ui.theme.LocalSemanticColors
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.NotesByFolderViewModel
 
 @Composable
 fun NotesByFolderScreen(
     folderId: String,
+    viewModel: NotesByFolderViewModel,
     onBack: () -> Unit,
     onNoteClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onNewNoteClick: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    NotesByFolderContent(
+        state = state,
+        onBack = onBack,
+        onNoteClick = onNoteClick,
+        onArchiveNote = viewModel::archiveNote,
+        onTrashNote = viewModel::trashNote,
+        onTogglePinNote = viewModel::togglePin,
+        onToggleFavourite = viewModel::toggleFavourite,
+        onSortChange = viewModel::setSortOrder,
+        onSearchClick = onSearchClick,
+        onNewNoteClick = onNewNoteClick
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,7 +93,13 @@ private fun NotesByFolderContent(
             TopAppBar(
                 title = {
                     Column {
-                        Text(text = state.folderName)
+                        val folderDisplayName = when (val name = state.folderName) {
+                            is Int -> stringResource(id = name)
+                            is String -> name
+                            else -> ""
+                        }
+
+                        Text(text = folderDisplayName)
                         Text(
                             text = stringResource(id = R.string.folder_note_count, state.allNotes.size + state.pinnedNotes.size),
                             style = MaterialTheme.typography.labelSmall,
