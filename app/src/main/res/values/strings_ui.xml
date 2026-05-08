@@ -29,6 +29,7 @@
 
     <!-- App bar titles -->
     <string name="app_bar_folders_tags">Folders &amp; tags</string>
+    <string name="app_bar_notes_by_tag">#%1$s</string>
 
     <!-- Tab row titles -->
     <string name="tab_row_folders">Folders</string>
@@ -57,6 +58,7 @@
     <string name="btn_create_note">Create note</string>
     <string name="btn_create_folder">Create folder</string>
     <string name="btn_create_tag">Create tag</string>
+    <string name="btn_browse_all_notes">Browse all notes</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
@@ -83,4 +85,6 @@
     <string name="folder_empty_state_description">Tap the + button to create your first folder.</string>
     <string name="tag_empty_state_title">No tags yet</string>
     <string name="tag_empty_state_description">Tap the + button to create your first tag.</string>
+    <string name="note_tag_empty_state_title">No notes tagged with #%1$s</string>
+    <string name="note_tag_empty_state_description">Assign this tag to notes in the editor.</string>
 </resources>

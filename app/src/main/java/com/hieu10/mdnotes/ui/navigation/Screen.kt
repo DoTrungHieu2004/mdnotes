@@ -12,4 +12,10 @@ sealed class Screen(val route: String) {
     object NoteEditor : Screen("note/{noteId}") {
         fun createRoute(noteId: String) = "note/$noteId"
     }
+    object NotesByFolder : Screen("notes_by_folder/{folderId}") {
+        fun createRoute(folderId: String) = "notes_by_folder/$folderId"
+    }
+    object NotesByTag : Screen("notes_by_tag/{tagId}") {
+        fun createRoute(tagId: String) = "notes_by_tag/$tagId"
+    }
 }
