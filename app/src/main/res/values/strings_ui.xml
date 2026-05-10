@@ -21,6 +21,7 @@
     <string name="cd_unlock">Unlock</string>
     <string name="cd_lock">Lock</string>
     <string name="cd_more">More</string>
+    <string name="cd_clear">Clear</string>
 
     <!-- Create action -->
     <string name="create_action_note">Note</string>
@@ -59,14 +60,17 @@
     <string name="btn_create_folder">Create folder</string>
     <string name="btn_create_tag">Create tag</string>
     <string name="btn_browse_all_notes">Browse all notes</string>
+    <string name="btn_clear_all">Clear all</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
     <string name="section_all_notes">All notes</string>
+    <string name="section_recent_searches">Recent searches</string>
 
     <!-- Input hints -->
     <string name="hint_note_title">Note title…</string>
     <string name="hint_note_content">Start writing in Markdown…</string>
+    <string name="hint_search">Search notes…</string>
 
     <!-- Note item labels -->
     <string name="note_untitled">Untitled</string>
@@ -87,4 +91,7 @@
     <string name="tag_empty_state_description">Tap the + button to create your first tag.</string>
     <string name="note_tag_empty_state_title">No notes tagged with #%1$s</string>
     <string name="note_tag_empty_state_description">Assign this tag to notes in the editor.</string>
+    <string name="search_no_result_state_title">No notes found</string>
+    <string name="search_no_result_state_description">Try a different search term.</string>
+    <string name="search_empty_state_title">Search your notes</string>
 </resources>
