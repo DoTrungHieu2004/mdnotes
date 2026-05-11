@@ -1,5 +1,10 @@
 package com.hieu10.mdnotes.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -15,10 +20,12 @@ import com.hieu10.mdnotes.ui.screens.MainScreen
 import com.hieu10.mdnotes.ui.screens.NoteEditorScreen
 import com.hieu10.mdnotes.ui.screens.NotesByFolderScreen
 import com.hieu10.mdnotes.ui.screens.NotesByTagScreen
+import com.hieu10.mdnotes.ui.screens.SearchScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 import com.hieu10.mdnotes.viewmodel.NoteEditorViewModel
 import com.hieu10.mdnotes.viewmodel.NotesByFolderViewModel
 import com.hieu10.mdnotes.viewmodel.NotesByTagViewModel
+import com.hieu10.mdnotes.viewmodel.SearchViewModel
 
 @Composable
 fun AppRoot() {
@@ -76,7 +83,7 @@ fun AppRoot() {
                         viewModel = viewModel,
                         onBack = { navController.popBackStack() },
                         onNoteClick = { noteId -> navController.navigate(Screen.NoteEditor.createRoute(noteId)) },
-                        onSearchClick = { /* navigate to search */ },
+                        onSearchClick = { navController.navigate(Screen.Search.route) },
                         onNewNoteClick = { navController.navigate(Screen.NoteEditor.createRoute("new")) }
                     )
                 }
@@ -99,8 +106,26 @@ fun AppRoot() {
                         viewModel = viewModel,
                         onBack = { navController.popBackStack() },
                         onNoteClick = { noteId -> navController.navigate(Screen.NoteEditor.createRoute(noteId)) },
-                        onSearchClick = { /* navigate to search */ },
+                        onSearchClick = { navController.navigate(Screen.Search.route) },
                         onNewNoteClick = { navController.navigate(Screen.NoteEditor.createRoute("new")) }
+                    )
+                }
+                composable(
+                    route = Screen.Search.route,
+                    enterTransition = {
+                        fadeIn(animationSpec = tween(300)) + scaleIn(initialScale = 0.8f, animationSpec = tween(300))
+                    },
+                    exitTransition = {
+                        fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.8f, animationSpec = tween(300))
+                    }
+                ) {
+                    val container = LocalAppContainer.current
+                    val viewModel = remember { SearchViewModel(noteRepository = container.noteRepository) }
+
+                    SearchScreen(
+                        viewModel = viewModel,
+                        onBack = { navController.popBackStack() },
+                        onNoteClick = { noteId -> navController.navigate(Screen.NoteEditor.createRoute(noteId)) }
                     )
                 }
             }

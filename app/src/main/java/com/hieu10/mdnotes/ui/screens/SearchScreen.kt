@@ -10,10 +10,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.sample.states.searchEmptyState
 import com.hieu10.mdnotes.sample.states.searchNoResultsState
 import com.hieu10.mdnotes.sample.states.searchState
@@ -24,13 +26,26 @@ import com.hieu10.mdnotes.ui.components.states.EmptySearchResultState
 import com.hieu10.mdnotes.ui.components.states.EmptySearchState
 import com.hieu10.mdnotes.ui.states.SearchUIState
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.SearchViewModel
 
 @Composable
 fun SearchScreen(
+    viewModel: SearchViewModel,
     onBack: () -> Unit,
     onNoteClick: (String) -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val query by viewModel.query.collectAsStateWithLifecycle()
 
+    SearchContent(
+        state = state.copy(query = query),
+        onQueryChange = viewModel::onQueryChange,
+        onClearQuery = viewModel::onClearQuery,
+        onResultClick = onNoteClick,
+        onBack = onBack,
+        onRecentQueryClick = viewModel::onRecentQueryClick,
+        onClearRecentSearches = viewModel::onClearRecentSearches
+    )
 }
 
 @Composable

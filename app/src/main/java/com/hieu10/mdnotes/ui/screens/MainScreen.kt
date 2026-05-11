@@ -80,7 +80,7 @@ fun MainScreen(navController: NavController) {
                         onNoteClick = { noteId ->
                             navController.navigate(Screen.NoteEditor.createRoute(noteId))
                         },
-                        onSearchClick = { /* navigate to search */ },
+                        onSearchClick = { navController.navigate(Screen.Search.route) },
                         onNewNoteClick = {
                             navController.navigate(Screen.NoteEditor.createRoute("new"))
                         }

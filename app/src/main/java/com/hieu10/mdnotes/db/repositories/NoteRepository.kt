@@ -8,6 +8,7 @@ import com.hieu10.mdnotes.db.dao.NoteRevisionDAO
 import com.hieu10.mdnotes.db.models.Note
 import com.hieu10.mdnotes.db.models.NoteLinkCrossRef
 import com.hieu10.mdnotes.db.models.NoteRevision
+import com.hieu10.mdnotes.db.pojo.SearchResult
 import kotlinx.coroutines.flow.Flow
 
 class NoteRepository(
@@ -92,6 +93,8 @@ class NoteRepository(
     fun searchNotes(query: String): Flow<List<Note>> = noteFtsDAO.searchNotes(query)
 
     suspend fun rebuildFtsIndex() = noteFtsDAO.rebuildFts()
+
+    suspend fun searchNotesWithSnippet(query: String): List<SearchResult> = noteFtsDAO.searchNotesWithSnippet(query)
 
     // ── REVISIONS ────────────────────────────────────
 

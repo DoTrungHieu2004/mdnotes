@@ -3,6 +3,7 @@ package com.hieu10.mdnotes.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.hieu10.mdnotes.db.models.Note
+import com.hieu10.mdnotes.db.pojo.SearchResult
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -37,4 +38,17 @@ interface NoteFtsDAO {
      */
     @Query("INSERT INTO tb_notes_fts(tb_notes_fts) VALUES('rebuild')")
     suspend fun rebuildFts()
+
+    /**
+     * Search notes with snippet.
+     * The MATCH syntax support prefix and phrase queries.
+     */
+    @Query("""
+        SELECT tb_notes.*, snippet(tb_notes_fts) AS snippet
+        FROM tb_notes
+        JOIN tb_notes_fts ON tb_notes.rowid = tb_notes_fts.rowid
+        WHERE tb_notes_fts MATCH :query
+        ORDER BY tb_notes.updatedAt DESC
+    """)
+    suspend fun searchNotesWithSnippet(query: String): List<SearchResult>
 }

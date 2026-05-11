@@ -18,4 +18,5 @@ sealed class Screen(val route: String) {
     object NotesByTag : Screen("notes_by_tag/{tagId}") {
         fun createRoute(tagId: String) = "notes_by_tag/$tagId"
     }
+    object Search : Screen("search")
 }
