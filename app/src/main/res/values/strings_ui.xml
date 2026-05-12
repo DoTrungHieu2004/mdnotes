@@ -22,6 +22,9 @@
     <string name="cd_lock">Lock</string>
     <string name="cd_more">More</string>
     <string name="cd_clear">Clear</string>
+    <string name="cd_overdue">Overdue</string>
+    <string name="cd_previous_month">Previous month</string>
+    <string name="cd_next_month">Next month</string>
 
     <!-- Create action -->
     <string name="create_action_note">Note</string>
@@ -31,6 +34,7 @@
     <!-- App bar titles -->
     <string name="app_bar_folders_tags">Folders &amp; tags</string>
     <string name="app_bar_notes_by_tag">#%1$s</string>
+    <string name="app_bar_calendar">Calendar</string>
 
     <!-- Tab row titles -->
     <string name="tab_row_folders">Folders</string>
@@ -61,6 +65,7 @@
     <string name="btn_create_tag">Create tag</string>
     <string name="btn_browse_all_notes">Browse all notes</string>
     <string name="btn_clear_all">Clear all</string>
+    <string name="btn_add_reminder">Add reminder</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
@@ -94,4 +99,5 @@
     <string name="search_no_result_state_title">No notes found</string>
     <string name="search_no_result_state_description">Try a different search term.</string>
     <string name="search_empty_state_title">Search your notes</string>
+    <string name="reminder_empty_state_title">No reminders for %1$s</string>
 </resources>

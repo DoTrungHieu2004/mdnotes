@@ -1,6 +1,10 @@
 package com.hieu10.mdnotes.utils
 
+import com.hieu10.mdnotes.R
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -20,4 +24,17 @@ fun relativeTime(timestamp: Long): String {
             sdf.format(Date(timestamp))
         }
     }
+}
+
+fun formatTime(epoch: Long): String {
+    val cal = Calendar.getInstance().apply { timeInMillis = epoch }
+    val hour = cal.get(Calendar.HOUR_OF_DAY)
+    val minute = cal.get(Calendar.MINUTE)
+    return if (hour == 0 && minute == 0) "All day"
+    else String.format("%02d:%02d", hour, minute)
+}
+
+fun formatLocalDate(date: LocalDate): String {
+    val formatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
+    return date.format(formatter)
 }
