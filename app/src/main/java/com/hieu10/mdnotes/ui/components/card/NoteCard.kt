@@ -58,7 +58,7 @@ fun NoteCard(
                 MaterialTheme.colorScheme.surfaceContainerLow
             }
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         // Folder accent strip (if folderColor provided)
         if (folderColor != null) {

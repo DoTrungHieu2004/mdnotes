@@ -2,7 +2,6 @@ package com.hieu10.mdnotes.ui.screens.fragments
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -119,72 +118,81 @@ private fun CalendarContent(
         },
         modifier = modifier
     ) { innerPadding ->
-        Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            contentPadding = PaddingValues(bottom = 80.dp)
         ) {
-            // Month header with navigation arrows
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                IconButton(onClick = onPreviousMonth) {
-                    Icon(
-                        imageVector = Icons.Filled.ChevronLeft,
-                        contentDescription = stringResource(id = R.string.cd_previous_month)
-                    )
-                }
-                TextButton(onClick = onMonthYearClick) {
-                    Text(
-                        text = monthYearLabel,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.ArrowDropDown,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-                IconButton(onClick = onNextMonth) {
-                    Icon(
-                        imageVector = Icons.Filled.ChevronRight,
-                        contentDescription = stringResource(id = R.string.cd_next_month)
-                    )
+            item {
+                // Month header with navigation arrows
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    IconButton(onClick = onPreviousMonth) {
+                        Icon(
+                            imageVector = Icons.Filled.ChevronLeft,
+                            contentDescription = stringResource(id = R.string.cd_previous_month)
+                        )
+                    }
+                    TextButton(onClick = onMonthYearClick) {
+                        Text(
+                            text = monthYearLabel,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.ArrowDropDown,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    IconButton(onClick = onNextMonth) {
+                        Icon(
+                            imageVector = Icons.Filled.ChevronRight,
+                            contentDescription = stringResource(id = R.string.cd_next_month)
+                        )
+                    }
                 }
             }
 
-            // Calendar grid
-            MonthCalendarGrid(
-                year = state.currentYear,
-                month = state.currentMonth,
-                selectedDate = state.selectedDate,
-                reminderDates = state.reminderDatesForMonth,
-                onDateSelected = onDateSelected
-            )
+            item {
+                // Calendar grid
+                MonthCalendarGrid(
+                    year = state.currentYear,
+                    month = state.currentMonth,
+                    selectedDate = state.selectedDate,
+                    reminderDates = state.reminderDatesForMonth,
+                    onDateSelected = onDateSelected
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
+            }
 
             // Reminders list for selected date
             if (state.isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(120.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(120.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
             } else if (state.remindersForSelectedDate.isEmpty()) {
-                EmptyRemindersForDate(
-                    date = state.selectedDate,
-                    onClickAdd = onCreateReminder,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                item {
+                    EmptyRemindersForDate(
+                        date = state.selectedDate,
+                        onClickAdd = onCreateReminder,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = 16.dp)
-                ) {
-                    items(state.remindersForSelectedDate, key = { it.reminder.reminderId }) { item ->
+                items(
+                    items = state.remindersForSelectedDate,
+                    key = { it.reminder.reminderId }
+                ) { item ->
+                    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                         ReminderItem(
                             reminder = item,
                             onToggleComplete = { onToggleComplete(item) },

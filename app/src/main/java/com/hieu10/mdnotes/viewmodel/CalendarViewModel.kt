@@ -87,6 +87,7 @@ class CalendarViewModel(
     }
 
     fun selectMonth(yearMonth: YearMonth) {
+        _currentMonth.value = yearMonth
         val lastDay = yearMonth.atEndOfMonth()
         val newDate = if (_selectedDate.value > lastDay) lastDay else _selectedDate.value
         _selectedDate.value = newDate
