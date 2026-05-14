@@ -4,6 +4,7 @@ import com.hieu10.mdnotes.MDNotesApp
 import com.hieu10.mdnotes.db.AppDB
 import com.hieu10.mdnotes.db.repositories.FolderRepository
 import com.hieu10.mdnotes.db.repositories.NoteRepository
+import com.hieu10.mdnotes.db.repositories.ReminderRepository
 import com.hieu10.mdnotes.db.repositories.TagRepository
 
 class AppContainer(private val app: MDNotesApp) {
@@ -30,5 +31,9 @@ class AppContainer(private val app: MDNotesApp) {
             tagDAO = database.tagDAO(),
             noteTagDAO = database.noteTagDAO()
         )
+    }
+
+    val reminderRepository: ReminderRepository by lazy {
+        ReminderRepository(database.reminderDAO())
     }
 }

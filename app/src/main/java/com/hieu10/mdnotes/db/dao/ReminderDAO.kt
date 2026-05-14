@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.hieu10.mdnotes.db.models.Reminder
+import com.hieu10.mdnotes.db.pojo.ReminderWithNoteTitle
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -45,4 +46,22 @@ interface ReminderDAO {
 
     @Query("DELETE FROM tb_reminders WHERE noteId = :noteId")
     suspend fun deleteAllRemindersForNote(noteId: String)
+
+    @Query("""
+        SELECT tb_reminders.*, tb_notes.title AS noteTitle
+        FROM tb_reminders
+        LEFT JOIN tb_notes ON tb_reminders.noteId = tb_notes.id
+        WHERE tb_reminders.remindAt BETWEEN :start AND :end
+        ORDER BY tb_reminders.remindAt ASC
+    """)
+    fun getReminderBetweenWithNotes(start: Long, end: Long): Flow<List<ReminderWithNoteTitle>>
+
+    @Query("""
+        SELECT tb_reminders.*, tb_notes.title AS noteTitle
+        FROM tb_reminders
+        LEFT JOIN tb_notes ON tb_reminders.noteId = tb_notes.id
+        WHERE tb_reminders.remindAt >= :startOfDay AND tb_reminders.remindAt < :endOfDay
+        ORDER BY tb_reminders.remindAt ASC
+    """)
+    fun getRemindersForDateWithNotes(startOfDay: Long, endOfDay: Long): Flow<List<ReminderWithNoteTitle>>
 }

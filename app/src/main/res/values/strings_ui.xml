@@ -25,6 +25,8 @@
     <string name="cd_overdue">Overdue</string>
     <string name="cd_previous_month">Previous month</string>
     <string name="cd_next_month">Next month</string>
+    <string name="cd_previous_year">Previous year</string>
+    <string name="cd_next_year">Next year</string>
 
     <!-- Create action -->
     <string name="create_action_note">Note</string>
@@ -39,6 +41,9 @@
     <!-- Tab row titles -->
     <string name="tab_row_folders">Folders</string>
     <string name="tab_row_tags">Tags</string>
+
+    <!-- Dialog titles -->
+    <string name="dialog_select_month">Select month</string>
 
     <!-- Bottom nav labels -->
     <string name="nav_home">Home</string>
@@ -66,6 +71,8 @@
     <string name="btn_browse_all_notes">Browse all notes</string>
     <string name="btn_clear_all">Clear all</string>
     <string name="btn_add_reminder">Add reminder</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>

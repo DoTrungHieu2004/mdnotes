@@ -39,10 +39,12 @@ import com.hieu10.mdnotes.ui.components.bar.BottomNavBar
 import com.hieu10.mdnotes.ui.components.button.CreateActionButton
 import com.hieu10.mdnotes.ui.navigation.BottomNavTab
 import com.hieu10.mdnotes.ui.navigation.Screen
+import com.hieu10.mdnotes.ui.screens.fragments.CalendarFragment
 import com.hieu10.mdnotes.ui.screens.fragments.FoldersTagsFragment
 import com.hieu10.mdnotes.ui.screens.fragments.HomeFragment
 import com.hieu10.mdnotes.ui.screens.placeholders.PlaceholderScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.CalendarViewModel
 import com.hieu10.mdnotes.viewmodel.FoldersTagsViewModel
 import com.hieu10.mdnotes.viewmodel.HomeViewModel
 
@@ -104,7 +106,18 @@ fun MainScreen(navController: NavController) {
                         }
                     )
                 }
-                BottomNavTab.CALENDAR -> PlaceholderScreen(title = "Calendar")
+                BottomNavTab.CALENDAR -> {
+                    val viewModel = remember {
+                        CalendarViewModel(container.reminderRepository)
+                    }
+
+                    CalendarFragment(
+                        viewModel = viewModel,
+                        onNoteClick = { noteId ->
+                            navController.navigate(Screen.NoteEditor.createRoute(noteId))
+                        }
+                    )
+                }
                 BottomNavTab.PROFILE_SETTINGS -> PlaceholderScreen(title = "Profile / Settings")
             }
 

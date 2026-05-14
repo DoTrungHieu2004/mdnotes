@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,34 +24,68 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.db.pojo.ReminderWithNoteTitle
 import com.hieu10.mdnotes.sample.states.sampleCalendarEmptyState
 import com.hieu10.mdnotes.sample.states.sampleCalendarLoadingState
 import com.hieu10.mdnotes.sample.states.sampleCalendarState
 import com.hieu10.mdnotes.ui.components.card.ReminderItem
+import com.hieu10.mdnotes.ui.components.dialog.MonthYearPickerDialog
 import com.hieu10.mdnotes.ui.components.grid.MonthCalendarGrid
 import com.hieu10.mdnotes.ui.components.states.EmptyRemindersForDate
 import com.hieu10.mdnotes.ui.states.CalendarUIState
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.CalendarViewModel
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun CalendarFragment(
+    viewModel: CalendarViewModel,
     onNoteClick: (String) -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    var showMonthPicker by remember { mutableStateOf(false) }
 
+    CalendarContent(
+        state = state,
+        onPreviousMonth = viewModel::goToPreviousMonth,
+        onNextMonth = viewModel::goToNextMonth,
+        onDateSelected = viewModel::selectDate,
+        onToggleComplete = viewModel::toggleComplete,
+        onEditReminder = viewModel::editReminder,          // placeholder for now
+        onDeleteReminder = viewModel::deleteReminder,
+        onNoteClick = onNoteClick,
+        onCreateReminder = viewModel::showCreateReminderDialog,   // placeholder
+        onMonthYearClick = { showMonthPicker = true }
+    )
+
+    if (showMonthPicker) {
+        MonthYearPickerDialog(
+            initialYearMonth = YearMonth.of(state.currentYear, state.currentMonth),
+            onDismiss = { showMonthPicker = false },
+            onConfirm = { yearMonth ->
+                viewModel.selectMonth(yearMonth)
+                showMonthPicker = false
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +100,7 @@ private fun CalendarContent(
     onDeleteReminder: (ReminderWithNoteTitle) -> Unit,
     onNoteClick: (String) -> Unit,
     onCreateReminder: () -> Unit,
+    onMonthYearClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val monthYearLabel = remember(state.currentYear, state.currentMonth) {
@@ -97,11 +134,18 @@ private fun CalendarContent(
                         contentDescription = stringResource(id = R.string.cd_previous_month)
                     )
                 }
-                Text(
-                    text = monthYearLabel,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
+                TextButton(onClick = onMonthYearClick) {
+                    Text(
+                        text = monthYearLabel,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
                 IconButton(onClick = onNextMonth) {
                     Icon(
                         imageVector = Icons.Filled.ChevronRight,
@@ -168,7 +212,8 @@ private fun PreviewScreenLight() {
             onEditReminder = {},
             onDeleteReminder = {},
             onNoteClick = {},
-            onCreateReminder = {}
+            onCreateReminder = {},
+            onMonthYearClick = {}
         )
     }
 }
@@ -186,7 +231,8 @@ private fun PreviewScreenDark() {
             onEditReminder = {},
             onDeleteReminder = {},
             onNoteClick = {},
-            onCreateReminder = {}
+            onCreateReminder = {},
+            onMonthYearClick = {}
         )
     }
 }
@@ -204,7 +250,8 @@ private fun PreviewScreenEmptyLight() {
             onEditReminder = {},
             onDeleteReminder = {},
             onNoteClick = {},
-            onCreateReminder = {}
+            onCreateReminder = {},
+            onMonthYearClick = {}
         )
     }
 }
@@ -222,7 +269,8 @@ private fun PreviewScreenEmptyDark() {
             onEditReminder = {},
             onDeleteReminder = {},
             onNoteClick = {},
-            onCreateReminder = {}
+            onCreateReminder = {},
+            onMonthYearClick = {}
         )
     }
 }
@@ -240,7 +288,8 @@ private fun PreviewScreenLoadingLight() {
             onEditReminder = {},
             onDeleteReminder = {},
             onNoteClick = {},
-            onCreateReminder = {}
+            onCreateReminder = {},
+            onMonthYearClick = {}
         )
     }
 }
@@ -258,7 +307,8 @@ private fun PreviewScreenLoadingDark() {
             onEditReminder = {},
             onDeleteReminder = {},
             onNoteClick = {},
-            onCreateReminder = {}
+            onCreateReminder = {},
+            onMonthYearClick = {}
         )
     }
 }
