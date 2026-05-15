@@ -7,6 +7,11 @@ import kotlinx.coroutines.flow.Flow
 
 class ReminderRepository(private val reminderDAO: ReminderDAO) {
 
+    suspend fun updateReminder(reminder: Reminder) = reminderDAO.updateReminder(reminder)
+
+    suspend fun getReminderById(reminderId: String): Reminder? =
+        reminderDAO.getReminderById(reminderId)
+
     fun getRemindersBetweenWithNotes(start: Long, end: Long): Flow<List<ReminderWithNoteTitle>> =
         reminderDAO.getReminderBetweenWithNotes(start, end)
 

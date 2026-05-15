@@ -38,11 +38,15 @@ import java.time.YearMonth
 @Composable
 fun MonthYearPickerDialog(
     initialYearMonth: YearMonth,
+    maxYearMonth: YearMonth = YearMonth.now(),
     onDismiss: () -> Unit,
     onConfirm: (YearMonth) -> Unit
 ) {
     var selectedYear by remember { mutableStateOf(initialYearMonth.year) }
     var selectedMonth by remember { mutableStateOf(initialYearMonth.monthValue) }
+
+    val canIncreaseYear = selectedYear < maxYearMonth.year
+    val canIncreaseMonth = selectedYear < maxYearMonth.year || (selectedYear == maxYearMonth.year && selectedMonth < maxYearMonth.monthValue)
 
     val arrayMonth = stringArrayResource(id = R.array.months)
 
@@ -57,7 +61,7 @@ fun MonthYearPickerDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { selectedYear-- }) {
+                    IconButton(onClick = { if (selectedYear > 0) selectedYear-- }) {
                         Icon(
                             imageVector = Icons.Filled.ChevronLeft,
                             contentDescription = stringResource(id = R.string.cd_previous_year)
@@ -67,7 +71,7 @@ fun MonthYearPickerDialog(
                         text = selectedYear.toString(),
                         style = MaterialTheme.typography.titleMedium
                     )
-                    IconButton(onClick = { selectedYear++ }) {
+                    IconButton(onClick = { if (canIncreaseYear) selectedYear++ }) {
                         Icon(
                             imageVector = Icons.Filled.ChevronRight,
                             contentDescription = stringResource(id = R.string.cd_next_year)
@@ -87,9 +91,11 @@ fun MonthYearPickerDialog(
                     itemsIndexed(arrayMonth) { index, name ->
                         val monthNum = index + 1
                         val isSelected = monthNum == selectedMonth
+                        val isDisabled = selectedYear == maxYearMonth.year && monthNum > maxYearMonth.monthValue
 
                         TextButton(
-                            onClick = { selectedMonth = monthNum },
+                            onClick = { if (!isDisabled) selectedMonth = monthNum },
+                            enabled = !isDisabled,
                             modifier = Modifier.aspectRatio(1f),
                             colors = ButtonDefaults.textButtonColors(
                                 contentColor = if (isSelected)

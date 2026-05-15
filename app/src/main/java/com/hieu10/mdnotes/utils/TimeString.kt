@@ -1,9 +1,6 @@
 package com.hieu10.mdnotes.utils
 
-import com.hieu10.mdnotes.R
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -34,7 +31,7 @@ fun formatTime(epoch: Long): String {
     else String.format("%02d:%02d", hour, minute)
 }
 
-fun formatLocalDate(date: LocalDate): String {
-    val formatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
-    return date.format(formatter)
+fun formatTimeEditDialog(epoch: Long): String {
+    val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return sdf.format(Date(epoch))
 }

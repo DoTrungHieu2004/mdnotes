@@ -2,9 +2,11 @@ package com.hieu10.mdnotes.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hieu10.mdnotes.db.models.Reminder
 import com.hieu10.mdnotes.db.pojo.ReminderWithNoteTitle
 import com.hieu10.mdnotes.db.repositories.ReminderRepository
 import com.hieu10.mdnotes.ui.states.CalendarUIState
+import com.hieu10.mdnotes.ui.states.ReminderEditData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -102,18 +104,33 @@ class CalendarViewModel(
         }
     }
 
+    fun saveReminder(data: ReminderEditData) {
+        viewModelScope.launch {
+            if (data.reminderId == null) {
+                // Create new reminder
+                val newReminder = Reminder(
+                    taskDescription = data.taskDescription,
+                    remindAt = data.remindAt,
+                    noteId = data.noteId.orEmpty()
+                )
+                reminderRepository.insertReminder(newReminder)
+            } else {
+                val existing = reminderRepository.getReminderById(data.reminderId)
+                if (existing != null) {
+                    val updated = existing.copy(
+                        taskDescription = data.taskDescription,
+                        remindAt = data.remindAt,
+                        noteId = data.noteId ?: existing.noteId
+                    )
+                    reminderRepository.updateReminder(updated)
+                }
+            }
+        }
+    }
+
     fun deleteReminder(item: ReminderWithNoteTitle) {
         viewModelScope.launch {
             reminderRepository.deleteReminderById(item.reminder.reminderId)
         }
-    }
-
-    // Placeholder for edit/create – will trigger UI later
-    fun editReminder(item: ReminderWithNoteTitle) {
-        // TODO: show edit dialog
-    }
-
-    fun showCreateReminderDialog() {
-        // TODO: show create dialog
     }
 }

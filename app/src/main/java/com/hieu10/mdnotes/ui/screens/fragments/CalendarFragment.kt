@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,13 +48,16 @@ import com.hieu10.mdnotes.sample.states.sampleCalendarLoadingState
 import com.hieu10.mdnotes.sample.states.sampleCalendarState
 import com.hieu10.mdnotes.ui.components.card.ReminderItem
 import com.hieu10.mdnotes.ui.components.dialog.MonthYearPickerDialog
+import com.hieu10.mdnotes.ui.components.dialog.ReminderEditDialog
 import com.hieu10.mdnotes.ui.components.grid.MonthCalendarGrid
 import com.hieu10.mdnotes.ui.components.states.EmptyRemindersForDate
 import com.hieu10.mdnotes.ui.states.CalendarUIState
+import com.hieu10.mdnotes.ui.states.ReminderEditData
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 import com.hieu10.mdnotes.viewmodel.CalendarViewModel
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -61,6 +67,9 @@ fun CalendarFragment(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showMonthPicker by remember { mutableStateOf(false) }
+    var showReminderDialog by remember { mutableStateOf(false) }
+    var editingReminderData by remember { mutableStateOf(ReminderEditData()) }
+    var reminderToDelete by remember { mutableStateOf<ReminderWithNoteTitle?>(null) }
 
     CalendarContent(
         state = state,
@@ -68,20 +77,76 @@ fun CalendarFragment(
         onNextMonth = viewModel::goToNextMonth,
         onDateSelected = viewModel::selectDate,
         onToggleComplete = viewModel::toggleComplete,
-        onEditReminder = viewModel::editReminder,          // placeholder for now
-        onDeleteReminder = viewModel::deleteReminder,
+        onEditReminder = { reminder ->
+            // Pre-fill dialog for editing
+            editingReminderData = ReminderEditData(
+                reminderId = reminder.reminder.reminderId,
+                taskDescription = reminder.reminder.taskDescription,
+                remindAt = reminder.reminder.remindAt,
+                noteId = reminder.reminder.noteId
+            )
+            showReminderDialog = true
+        },
+        onDeleteReminder = { reminder ->
+            reminderToDelete = reminder
+        },
         onNoteClick = onNoteClick,
-        onCreateReminder = viewModel::showCreateReminderDialog,   // placeholder
+        onCreateReminder = {
+            editingReminderData = ReminderEditData(
+                // default time could be 9:00 AM today
+                remindAt = LocalDate.now().atTime(9, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            )
+            showReminderDialog = true
+        },
         onMonthYearClick = { showMonthPicker = true }
     )
 
+    // Month picker dialog
     if (showMonthPicker) {
         MonthYearPickerDialog(
             initialYearMonth = YearMonth.of(state.currentYear, state.currentMonth),
+            maxYearMonth = YearMonth.now(),
             onDismiss = { showMonthPicker = false },
             onConfirm = { yearMonth ->
                 viewModel.selectMonth(yearMonth)
                 showMonthPicker = false
+            }
+        )
+    }
+
+    // Reminder edit/create dialog
+    if (showReminderDialog) {
+        ReminderEditDialog(
+            initial = editingReminderData,
+            onDismiss = { showReminderDialog = false },
+            onConfirm = { data ->
+                viewModel.saveReminder(data)
+                showReminderDialog = false
+            }
+        )
+    }
+
+    // Delete confirmation
+    reminderToDelete?.let { reminder ->
+        AlertDialog(
+            onDismissRequest = { reminderToDelete = null },
+            title = { Text(text = stringResource(id = R.string.dialog_delete_reminder)) },
+            text = { Text(text = stringResource(id = R.string.dialog_content_delete_reminder)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.deleteReminder(reminder)
+                    reminderToDelete = null }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.btn_delete),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { reminderToDelete = null }) {
+                    Text(text = stringResource(id = R.string.btn_cancel))
+                }
             }
         )
     }
@@ -115,6 +180,17 @@ private fun CalendarContent(
                     containerColor = MaterialTheme.colorScheme.surface
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onCreateReminder,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = stringResource(id = R.string.cd_add_reminder)
+                )
+            }
         },
         modifier = modifier
     ) { innerPadding ->

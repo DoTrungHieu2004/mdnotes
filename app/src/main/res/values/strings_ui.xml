@@ -44,6 +44,13 @@
 
     <!-- Dialog titles -->
     <string name="dialog_select_month">Select month</string>
+    <string name="dialog_new_reminder">New reminder</string>
+    <string name="dialog_edit_reminder">Edit reminder</string>
+    <string name="dialog_select_time">Select time</string>
+    <string name="dialog_delete_reminder">Delete reminder</string>
+
+    <!-- Dialog content -->
+    <string name="dialog_content_delete_reminder">Are you sure want to delete this reminder?\n\"%1$s\"</string>
 
     <!-- Bottom nav labels -->
     <string name="nav_home">Home</string>
@@ -63,6 +70,7 @@
     <string name="dropdown_rename">Rename</string>
     <string name="dropdown_change_color">Change color</string>
     <string name="dropdown_delete">Delete</string>
+    <string name="dropdown_edit">Edit</string>
 
     <!-- Button texts -->
     <string name="btn_create_note">Create note</string>
@@ -73,6 +81,8 @@
     <string name="btn_add_reminder">Add reminder</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_delete">Delete</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
@@ -83,6 +93,7 @@
     <string name="hint_note_title">Note title…</string>
     <string name="hint_note_content">Start writing in Markdown…</string>
     <string name="hint_search">Search notes…</string>
+    <string name="hint_task_description">Task description</string>
 
     <!-- Note item labels -->
     <string name="note_untitled">Untitled</string>
