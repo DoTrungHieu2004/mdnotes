@@ -33,7 +33,7 @@ import com.hieu10.mdnotes.db.models.Tag
         NoteRevision::class, Asset::class, Setting::class, NoteLinkCrossRef::class, Reminder::class,
         Shortcut::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(Converters::class)

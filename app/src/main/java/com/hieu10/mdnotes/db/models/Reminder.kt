@@ -20,7 +20,7 @@ import java.util.UUID
 )
 data class Reminder(
     @PrimaryKey val reminderId: String = UUID.randomUUID().toString(),
-    val noteId: String,
+    val noteId: String? = null,
     val taskDescription: String,
     val remindAt: Long,
     val isCompleted: Boolean = false

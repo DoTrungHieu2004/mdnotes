@@ -18,7 +18,9 @@ class MDNotesApp : Application() {
             applicationContext,
             AppDB::class.java,
             "mdnotes.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
         container = AppContainer(this)
     }

@@ -111,7 +111,7 @@ class CalendarViewModel(
                 val newReminder = Reminder(
                     taskDescription = data.taskDescription,
                     remindAt = data.remindAt,
-                    noteId = data.noteId.orEmpty()
+                    noteId = data.noteId
                 )
                 reminderRepository.insertReminder(newReminder)
             } else {

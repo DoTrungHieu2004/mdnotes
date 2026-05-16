@@ -131,11 +131,13 @@ fun CalendarFragment(
         AlertDialog(
             onDismissRequest = { reminderToDelete = null },
             title = { Text(text = stringResource(id = R.string.dialog_delete_reminder)) },
-            text = { Text(text = stringResource(id = R.string.dialog_content_delete_reminder)) },
+            text = { Text(text = stringResource(id = R.string.dialog_content_delete_reminder, reminder.reminder.taskDescription)) },
             confirmButton = {
-                TextButton(onClick = {
-                    viewModel.deleteReminder(reminder)
-                    reminderToDelete = null }
+                TextButton(
+                    onClick = {
+                        viewModel.deleteReminder(reminder)
+                        reminderToDelete = null
+                    }
                 ) {
                     Text(
                         text = stringResource(id = R.string.btn_delete),

@@ -41,6 +41,10 @@ fun ReminderEditDialog(
     var taskDescription by remember { mutableStateOf(initial.taskDescription) }
     var remindAt by remember { mutableStateOf(initial.remindAt) }
 
+    val isDescriptionValid = taskDescription.isNotBlank()
+    val isTimeValid = remindAt > System.currentTimeMillis()
+    val canSave = isDescriptionValid && isTimeValid
+
     val dateState = rememberDatePickerState(
         initialSelectedDateMillis = remindAt
     )
@@ -96,6 +100,7 @@ fun ReminderEditDialog(
         },
         confirmButton = {
             TextButton(
+                enabled = canSave,
                 onClick = {
                     onConfirm(
                         ReminderEditData(

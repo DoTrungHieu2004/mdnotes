@@ -117,7 +117,7 @@ fun ReminderItem(
                     ),
                     color = taskColor
                 )
-                if (reminder.noteTitle != null) {
+                if (reminder.noteTitle != null && reminder.reminder.noteId != null) {
                     Spacer(modifier = Modifier.height(2.dp))
                     TextButton(
                         onClick = { onNoteClick(reminder.reminder.noteId) },
