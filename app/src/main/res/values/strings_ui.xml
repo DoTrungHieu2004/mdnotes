@@ -27,6 +27,7 @@
     <string name="cd_next_month">Next month</string>
     <string name="cd_previous_year">Previous year</string>
     <string name="cd_next_year">Next year</string>
+    <string name="cd_toggle">Toggle</string>
 
     <!-- Create action -->
     <string name="create_action_note">Note</string>
@@ -37,6 +38,7 @@
     <string name="app_bar_folders_tags">Folders &amp; tags</string>
     <string name="app_bar_notes_by_tag">#%1$s</string>
     <string name="app_bar_calendar">Calendar</string>
+    <string name="app_bar_revision_history">Revision history</string>
 
     <!-- Tab row titles -->
     <string name="tab_row_folders">Folders</string>
@@ -83,6 +85,7 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_save">Save</string>
     <string name="btn_delete">Delete</string>
+    <string name="btn_restore">Restore</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
@@ -118,4 +121,6 @@
     <string name="search_no_result_state_description">Try a different search term.</string>
     <string name="search_empty_state_title">Search your notes</string>
     <string name="reminder_empty_state_title">No reminders for %1$s</string>
+    <string name="revision_empty_state_title">No revisions yet</string>
+    <string name="revision_empty_state_description">Each auto‑save or manual save will appear here.</string>
 </resources>

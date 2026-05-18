@@ -35,3 +35,8 @@ fun formatTimeEditDialog(epoch: Long): String {
     val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
     return sdf.format(Date(epoch))
 }
+
+fun formatRevisionTimestamp(epoch: Long): String {
+    val sdf = SimpleDateFormat("MMM d, yyyy  hh:mm a", Locale.getDefault())
+    return sdf.format(Date(epoch))
+}
