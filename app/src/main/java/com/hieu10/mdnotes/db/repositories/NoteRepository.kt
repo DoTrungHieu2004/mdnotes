@@ -121,6 +121,9 @@ class NoteRepository(
         }
     }
 
+    suspend fun deleteRevisionById(revisionId: String) =
+        noteRevisionDAO.deleteRevisionById(revisionId)
+
     // ── NOTE LINKS ────────────────────────────────────
 
     fun getOutgoingLinks(noteId: String): Flow<List<NoteLinkCrossRef>> =

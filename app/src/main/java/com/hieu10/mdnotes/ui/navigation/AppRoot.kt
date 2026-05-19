@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,11 +23,13 @@ import com.hieu10.mdnotes.ui.screens.MainScreen
 import com.hieu10.mdnotes.ui.screens.NoteEditorScreen
 import com.hieu10.mdnotes.ui.screens.NotesByFolderScreen
 import com.hieu10.mdnotes.ui.screens.NotesByTagScreen
+import com.hieu10.mdnotes.ui.screens.RevisionHistoryScreen
 import com.hieu10.mdnotes.ui.screens.SearchScreen
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 import com.hieu10.mdnotes.viewmodel.NoteEditorViewModel
 import com.hieu10.mdnotes.viewmodel.NotesByFolderViewModel
 import com.hieu10.mdnotes.viewmodel.NotesByTagViewModel
+import com.hieu10.mdnotes.viewmodel.RevisionHistoryViewModel
 import com.hieu10.mdnotes.viewmodel.SearchViewModel
 
 @Composable
@@ -48,19 +53,30 @@ fun AppRoot() {
                     arguments = listOf(navArgument("noteId") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val noteId = backStackEntry.arguments?.getString("noteId") ?: return@composable
-                    val container = LocalAppContainer.current
-                    val viewModel = remember(noteId) {
-                        NoteEditorViewModel(
-                            noteId = noteId,
-                            noteRepository = container.noteRepository,
-                            folderRepository = container.folderRepository,
-                            tagRepository = container.tagRepository
-                        )
-                    }
+                    val app = LocalContext.current.applicationContext as MDNotesApp
+
+                    // Factory
+                    val viewModel = viewModel<NoteEditorViewModel>(
+                        factory = object : ViewModelProvider.Factory {
+                            @Suppress("UNCHECKED_CAST")
+                            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                return NoteEditorViewModel(
+                                    application = app,
+                                    noteId = noteId,
+                                    noteRepository = app.container.noteRepository,
+                                    folderRepository = app.container.folderRepository,
+                                    tagRepository = app.container.tagRepository
+                                ) as T
+                            }
+                        }
+                    )
 
                     NoteEditorScreen(
                         noteId = noteId,
                         viewModel = viewModel,
+                        onNavigateToRevisions = {
+                            navController.navigate(Screen.RevisionHistory.createRoute(noteId))
+                        },
                         onBack = { navController.popBackStack() }
                     )
                 }
@@ -126,6 +142,29 @@ fun AppRoot() {
                         viewModel = viewModel,
                         onBack = { navController.popBackStack() },
                         onNoteClick = { noteId -> navController.navigate(Screen.NoteEditor.createRoute(noteId)) }
+                    )
+                }
+                composable(
+                    route = Screen.RevisionHistory.route,
+                    arguments = listOf(navArgument("noteId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val noteId = backStackEntry.arguments?.getString("noteId") ?: return@composable
+                    val app = LocalContext.current.applicationContext as MDNotesApp
+
+                    // Factory to pass parameters to ViewModel
+                    val viewModel = viewModel<RevisionHistoryViewModel>(
+                        factory = object : ViewModelProvider.Factory {
+                            @Suppress("UNCHECKED_CAST")
+                            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                return RevisionHistoryViewModel(app, noteId, app.container.noteRepository) as T
+                            }
+                        }
+                    )
+
+                    RevisionHistoryScreen(
+                        noteId = noteId,
+                        viewModel = viewModel,
+                        onBack = { navController.popBackStack() }
                     )
                 }
             }

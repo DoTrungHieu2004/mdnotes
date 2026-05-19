@@ -19,4 +19,7 @@ sealed class Screen(val route: String) {
         fun createRoute(tagId: String) = "notes_by_tag/$tagId"
     }
     object Search : Screen("search")
+    object RevisionHistory : Screen("revisions/{noteId}") {
+        fun createRoute(noteId: String) = "revisions/$noteId"
+    }
 }

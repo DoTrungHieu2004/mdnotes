@@ -19,11 +19,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.db.models.NoteRevision
 import com.hieu10.mdnotes.sample.states.sampleRevisionHistoryEmptyState
@@ -33,13 +35,23 @@ import com.hieu10.mdnotes.ui.components.card.RevisionCard
 import com.hieu10.mdnotes.ui.components.states.EmptyRevisionState
 import com.hieu10.mdnotes.ui.states.RevisionHistoryUIState
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import com.hieu10.mdnotes.viewmodel.RevisionHistoryViewModel
 
 @Composable
 fun RevisionHistoryScreen(
     noteId: String,
+    viewModel: RevisionHistoryViewModel,
     onBack: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    RevisionHistoryContent(
+        state = state,
+        onBack = onBack,
+        onToggleExpand = viewModel::toggleExpand,
+        onRestore = { revision -> viewModel.restoreRevision(revision) },
+        onDelete = { revision -> viewModel.deleteRevision(revision) }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

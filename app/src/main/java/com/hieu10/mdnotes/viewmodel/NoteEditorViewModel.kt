@@ -1,7 +1,9 @@
 package com.hieu10.mdnotes.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.hieu10.mdnotes.MDNotesApp
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.db.models.Note
 import com.hieu10.mdnotes.db.repositories.FolderRepository
@@ -18,11 +20,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NoteEditorViewModel(
+    application: Application,
     private val noteId: String,
     private val noteRepository: NoteRepository,
     private val folderRepository: FolderRepository,
     private val tagRepository: TagRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _state = MutableStateFlow(NoteEditorUIState(noteId = noteId))
     val state: StateFlow<NoteEditorUIState> = _state.asStateFlow()
@@ -31,7 +34,7 @@ class NoteEditorViewModel(
     private var saveJob: Job? = null
 
     init {
-
+        loadNote()
     }
 
     // ── Load existing note ─────────────────────────
@@ -119,14 +122,17 @@ class NoteEditorViewModel(
                     )
                 }
             } else {
-                // Update existing
+                // Save current content as a revision
+                val desc = getApplication<MDNotesApp>().getString(R.string.auto_save_note)
+                noteRepository.saveRevision(currentNote!!, desc)
+
                 noteRepository.updateNoteContent(
                     noteId = currentNote!!.id,
                     title = s.title,
                     content = s.content,
-                    saveRevision = true
+                    saveRevision = false
                 )
-                _state.update { it.copy(saveStatus = R.string.unsaved) }
+                _state.update { it.copy(saveStatus = R.string.saved) }
             }
         }
     }
