@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -14,8 +15,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.hieu10.mdnotes.sample.data.singleNoteSample
 import com.hieu10.mdnotes.ui.theme.LocalMarkdownColors
 import com.hieu10.mdnotes.ui.theme.MDNotesTheme
+import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.core.CorePlugin
+import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.ext.tasklist.TaskListPlugin
@@ -29,13 +32,23 @@ fun MarkdownPreview(
     val markdownColors = LocalMarkdownColors.current
     val context = LocalContext.current
 
-    val markwon = remember {
+    val markwon = remember(markdownColors) {
         Markwon.builder(context)
             .usePlugin(CorePlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(TablePlugin.create(context))
             .usePlugin(TaskListPlugin.create(context))
             .usePlugin(ImagesPlugin.create())
+            .usePlugin(object : AbstractMarkwonPlugin() {
+                override fun configureTheme(builder: MarkwonTheme.Builder) {
+                    builder
+                        .linkColor(markdownColors.link.toArgb())
+                        .blockQuoteColor(markdownColors.quoteBar.toArgb())
+                        .codeBackgroundColor(markdownColors.codeBlockBackground.toArgb())
+                        .codeTextColor(markdownColors.codeBlockText.toArgb())
+                        .headingBreakColor(markdownColors.heading.toArgb())
+                }
+            })
             .build()
     }
 
@@ -43,9 +56,11 @@ fun MarkdownPreview(
         factory = { ctx ->
             TextView(ctx).apply {
                 movementMethod = LinkMovementMethod.getInstance()
+                setTextColor(markdownColors.textPrimary.toArgb())
             }
         },
         update = { textView ->
+            textView.setTextColor(markdownColors.textPrimary.toArgb())
             markwon.setMarkdown(textView, content)
         },
         modifier = modifier.fillMaxWidth().padding(16.dp)

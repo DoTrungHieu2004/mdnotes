@@ -137,10 +137,22 @@ class NoteEditorViewModel(
         }
     }
 
+    /**
+     * Called when the user leaves the editor.
+     * Creates a single revision capturing the current state if the note has been created.
+     */
+    fun leaveEditor() {
+        val note = currentNote ?: return
+        val desc = getApplication<MDNotesApp>().getString(R.string.on_exit)
+
+        viewModelScope.launch {
+            noteRepository.saveRevision(note, desc)
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         saveJob?.cancel()
-        // Fire a final save synchronously is not possible; autoSave() last scheduled one may still run.
     }
 
     // ── Toggle properties ──────────────────────────

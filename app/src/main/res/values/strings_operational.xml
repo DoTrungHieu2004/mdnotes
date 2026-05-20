@@ -5,6 +5,7 @@
     <string name="auto_save_note">Auto-save</string>
     <string name="saved">Saved</string>
     <string name="unsaved">Unsaved</string>
+    <string name="on_exit">Saved before exiting</string>
 
     <string name="revision_description">Before restoring version from %1$s</string>
 

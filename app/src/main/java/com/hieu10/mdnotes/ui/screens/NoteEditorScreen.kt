@@ -1,8 +1,13 @@
 package com.hieu10.mdnotes.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
@@ -30,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,7 +58,8 @@ import com.hieu10.mdnotes.viewmodel.NoteEditorViewModel
 fun NoteEditorScreen(
     noteId: String,
     viewModel: NoteEditorViewModel,
-    onBack: () -> Unit
+    onNavigateToRevisions: () -> Unit,
+    onBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -60,7 +67,7 @@ fun NoteEditorScreen(
         state = state,
         onBack = {
             // auto-save triggered by ViewModel before navigating back
-            viewModel.autoSave()
+            viewModel.leaveEditor()
             onBack()
         },
         onTitleChange = viewModel::onTitleChanged,
@@ -69,6 +76,10 @@ fun NoteEditorScreen(
         onToggleFavourite = viewModel::toggleFavourite,
         onToggleLocked = viewModel::toggleLocked,
         onOverflowAction = viewModel::onOverflowAction,
+        onNavigateToRevisions = {
+            viewModel.leaveEditor()
+            onNavigateToRevisions()
+        },
         onBold = viewModel::insertBold,
         onItalic = viewModel::insertItalic,
         onHeading = viewModel::insertHeading,
@@ -97,6 +108,7 @@ private fun NoteEditorContent(
     onToggleFavourite: () -> Unit,
     onToggleLocked: () -> Unit,
     onOverflowAction: (String) -> Unit,
+    onNavigateToRevisions: () -> Unit,
     // Formatting toolbar
     onBold: () -> Unit,
     onItalic: () -> Unit,
@@ -177,7 +189,11 @@ private fun NoteEditorContent(
                     ) {
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.dropdown_revision_history)) },
-                            onClick = { onOverflowAction("revisions"); overflowExpanded = false }
+                            onClick = {
+                                onOverflowAction("revisions")
+                                onNavigateToRevisions()
+                                overflowExpanded = false
+                            }
                         )
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.dropdown_note_info)) },
@@ -199,24 +215,33 @@ private fun NoteEditorContent(
             )
         },
         bottomBar = {
-            Column {
-                NoteStatusBar(
-                    saveStatus = stringResource(id = state.saveStatus),
-                    wordCount = state.wordCount
-                )
-                NoteMetadataBar(
-                    tags = state.tags,
-                    folderName = state.folderName,
-                    backlinkCount = state.backlinkCount,
-                    onTagsClick = onTagsClick,
-                    onFolderClick = onFolderClick,
-                    onLinksClick = onLinksClick,
-                    onAddReminder = onAddReminder
-                )
+            val imeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+            if (!imeVisible) {
+                Column(modifier = Modifier.navigationBarsPadding() ) {
+                    NoteStatusBar(
+                        saveStatus = stringResource(id = state.saveStatus),
+                        wordCount = state.wordCount
+                    )
+                    NoteMetadataBar(
+                        tags = state.tags,
+                        folderName = state.folderName,
+                        backlinkCount = state.backlinkCount,
+                        onTagsClick = onTagsClick,
+                        onFolderClick = onFolderClick,
+                        onLinksClick = onLinksClick,
+                        onAddReminder = onAddReminder
+                    )
+                }
             }
-        }
+        },
+        modifier = modifier,
+        contentWindowInsets = WindowInsets.systemBars
     ) { innerPadding ->
-        Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .imePadding()
+        ) {
             MarkdownFormattingToolbar(
                 onBold = onBold,
                 onItalic = onItalic,
@@ -272,9 +297,10 @@ private fun PreviewScreenLight() {
         NoteEditorContent(
             state = noteEditorState, onBack = {}, onTitleChange = {}, onContentChange = {},
             onTogglePin = {}, onToggleFavourite = {}, onToggleLocked = {}, onOverflowAction = {},
-            onBold = {}, onItalic = {}, onHeading = {}, onStrikethrough = {}, onBulletList = {},
-            onLink = {}, onImage = {}, onAttachment = {}, onCodeBlock = {}, onTogglePreview = {},
-            onTagsClick = {}, onFolderClick = {}, onLinksClick = {}, onAddReminder = {}
+            onNavigateToRevisions = {}, onBold = {}, onItalic = {}, onHeading = {},
+            onStrikethrough = {}, onBulletList = {}, onLink = {}, onImage = {}, onAttachment = {},
+            onCodeBlock = {}, onTogglePreview = {}, onTagsClick = {}, onFolderClick = {},
+            onLinksClick = {}, onAddReminder = {}
         )
     }
 }
@@ -286,9 +312,10 @@ private fun PreviewScreenDark() {
         NoteEditorContent(
             state = noteEditorState, onBack = {}, onTitleChange = {}, onContentChange = {},
             onTogglePin = {}, onToggleFavourite = {}, onToggleLocked = {}, onOverflowAction = {},
-            onBold = {}, onItalic = {}, onHeading = {}, onStrikethrough = {}, onBulletList = {},
-            onLink = {}, onImage = {}, onAttachment = {}, onCodeBlock = {}, onTogglePreview = {},
-            onTagsClick = {}, onFolderClick = {}, onLinksClick = {}, onAddReminder = {}
+            onNavigateToRevisions = {}, onBold = {}, onItalic = {}, onHeading = {},
+            onStrikethrough = {}, onBulletList = {}, onLink = {}, onImage = {}, onAttachment = {},
+            onCodeBlock = {}, onTogglePreview = {}, onTagsClick = {}, onFolderClick = {},
+            onLinksClick = {}, onAddReminder = {}
         )
     }
 }
