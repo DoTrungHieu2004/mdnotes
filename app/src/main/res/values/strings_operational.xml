@@ -12,4 +12,7 @@
     <!-- Unknown names -->
     <string name="unknown_folder">Unknown folder</string>
     <string name="unknown_tag">Unknown tag</string>
+    
+    <!-- Validation -->
+    <string name="validation_name_empty">Name cannot be empty</string>
 </resources>

@@ -17,6 +17,8 @@ class TagRepository(
 
     suspend fun getTagById(tagId: String): Tag? = tagDAO.getTagById(tagId)
 
+    suspend fun getTagByName(name: String): Tag? = tagDAO.getTagByName(name)
+
     suspend fun createTag(name: String): Result<Tag> {
         return try {
             val tag = Tag(tagName = name)

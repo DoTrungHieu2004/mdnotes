@@ -29,6 +29,8 @@ import com.hieu10.mdnotes.sample.states.foldersState
 import com.hieu10.mdnotes.sample.states.tagsState
 import com.hieu10.mdnotes.ui.components.card.FolderCard
 import com.hieu10.mdnotes.ui.components.card.TagCard
+import com.hieu10.mdnotes.ui.components.dialog.CreateFolderDialog
+import com.hieu10.mdnotes.ui.components.dialog.CreateTagDialog
 import com.hieu10.mdnotes.ui.components.states.EmptyFoldersState
 import com.hieu10.mdnotes.ui.components.states.EmptyTagsState
 import com.hieu10.mdnotes.ui.states.FoldersTagsTab
@@ -43,6 +45,8 @@ fun FoldersTagsFragment(
     onTagClick: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val showFolderDialog by viewModel.showCreateFolderDialog.collectAsStateWithLifecycle()
+    val showTagDialog by viewModel.showCreateTagDialog.collectAsStateWithLifecycle()
 
     FoldersTagsContent(
         state = state,
@@ -57,6 +61,19 @@ fun FoldersTagsFragment(
         onCreateFolder = viewModel::showCreateFolderDialog,
         onCreateTag = viewModel::showCreateTagDialog
     )
+
+    if (showFolderDialog) {
+        CreateFolderDialog(
+            onDismiss = viewModel::hideCreateFolderDialog,
+            onConfirm = { name, color -> viewModel.createFolder(name, color) }
+        )
+    }
+    if (showTagDialog) {
+        CreateTagDialog(
+            onDismiss = viewModel::hideCreateTagDialog,
+            onConfirm = { name -> viewModel.createTag(name) }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

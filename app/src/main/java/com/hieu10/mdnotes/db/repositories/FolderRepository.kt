@@ -11,6 +11,8 @@ class FolderRepository(private val folderDAO: FolderDAO) {
 
     suspend fun getFolderById(id: String): Folder? = folderDAO.getFolderById(id)
 
+    suspend fun getFolderByName(name: String): Folder? = folderDAO.getFolderByName(name)
+
     suspend fun createFolder(name: String, colorHex: String): Result<Folder> {
         return try {
             val folder = Folder(name = name, colorHex = colorHex)

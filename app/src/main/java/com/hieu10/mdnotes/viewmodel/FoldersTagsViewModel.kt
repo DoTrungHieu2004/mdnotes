@@ -9,6 +9,7 @@ import com.hieu10.mdnotes.ui.states.FoldersTagsTab
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -46,6 +47,17 @@ class FoldersTagsViewModel(
 
     // ── Folder actions ──────────────────────────
 
+    fun createFolder(name: String, colorHex: String) {
+        viewModelScope.launch {
+            // Check duplicate
+            if (folderRepository.getFolderByName(name) != null) {
+                return@launch
+            }
+            folderRepository.createFolder(name, colorHex)
+        }
+        _showCreateFolderDialog.value = false
+    }
+
     fun renameFolder(folderId: String) {
         // Not implemented yet.
         // TODO: A dialog will be shown here.
@@ -62,7 +74,18 @@ class FoldersTagsViewModel(
 
     // ── Tag actions ──────────────────────────
 
-    fun renameTag(tagId: String) {
+    fun createTag(name: String) {
+        viewModelScope.launch {
+            if (tagRepository.getTagByName(name) != null) {
+                // duplicate, ignore for now
+                return@launch
+            }
+            tagRepository.createTag(name)
+        }
+        _showCreateTagDialog.value = false
+    }
+
+        fun renameTag(tagId: String) {
         // Dialog placeholder
         // TODO: A dialog will be shown here.
     }
@@ -73,13 +96,27 @@ class FoldersTagsViewModel(
         }
     }
 
-    // ── Create dialogs (placeholder) ─────────
+    // ── Dialog state ─────────────────────────
+
+    private val _showCreateFolderDialog = MutableStateFlow(false)
+    val showCreateFolderDialog: StateFlow<Boolean> = _showCreateFolderDialog.asStateFlow()
+
+    private val _showCreateTagDialog = MutableStateFlow(false)
+    val showCreateTagDialog: StateFlow<Boolean> = _showCreateTagDialog.asStateFlow()
 
     fun showCreateFolderDialog() {
-        // trigger state for dialog – can be done in UI directly
+        _showCreateFolderDialog.value = true
+    }
+
+    fun hideCreateFolderDialog() {
+        _showCreateFolderDialog.value = false
     }
 
     fun showCreateTagDialog() {
-        // trigger state for dialog
+        _showCreateTagDialog.value = true
+    }
+
+    fun hideCreateTagDialog() {
+        _showCreateTagDialog.value = false
     }
 }

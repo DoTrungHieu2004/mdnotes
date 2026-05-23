@@ -29,10 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.hieu10.mdnotes.R
 import com.hieu10.mdnotes.di.LocalAppContainer
 import com.hieu10.mdnotes.ui.components.bar.BottomNavBar
@@ -43,7 +41,6 @@ import com.hieu10.mdnotes.ui.screens.fragments.CalendarFragment
 import com.hieu10.mdnotes.ui.screens.fragments.FoldersTagsFragment
 import com.hieu10.mdnotes.ui.screens.fragments.HomeFragment
 import com.hieu10.mdnotes.ui.screens.placeholders.PlaceholderScreen
-import com.hieu10.mdnotes.ui.theme.MDNotesTheme
 import com.hieu10.mdnotes.viewmodel.CalendarViewModel
 import com.hieu10.mdnotes.viewmodel.FoldersTagsViewModel
 import com.hieu10.mdnotes.viewmodel.HomeViewModel
@@ -53,6 +50,14 @@ fun MainScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf(BottomNavTab.HOME) }
     var fabExpanded by remember { mutableStateOf(false) }
     val container = LocalAppContainer.current
+
+    // Shared ViewModel for Folders/Tags (always alive while BottomNavScreen is alive)
+    val foldersTagsViewModel = remember {
+        FoldersTagsViewModel(
+            folderRepository = container.folderRepository,
+            tagRepository = container.tagRepository
+        )
+    }
 
     Scaffold(
         bottomBar = {
@@ -89,15 +94,8 @@ fun MainScreen(navController: NavController) {
                     )
                 }
                 BottomNavTab.FOLDERS_TAGS -> {
-                    val viewModel = remember {
-                        FoldersTagsViewModel(
-                            folderRepository = container.folderRepository,
-                            tagRepository = container.tagRepository
-                        )
-                    }
-
                     FoldersTagsFragment(
-                        viewModel = viewModel,
+                        viewModel = foldersTagsViewModel,
                         onFolderClick = { folderId ->
                             navController.navigate(Screen.NotesByFolder.createRoute(folderId))
                         },
@@ -154,7 +152,7 @@ fun MainScreen(navController: NavController) {
                         icon = Icons.Filled.CreateNewFolder,
                         label = stringResource(id = R.string.create_action_folder),
                         onClick = {
-                            /* TODO: start folder creation */
+                            foldersTagsViewModel.showCreateFolderDialog()
                             fabExpanded = false
                         }
                     )
@@ -162,7 +160,7 @@ fun MainScreen(navController: NavController) {
                         icon = Icons.AutoMirrored.Filled.Label,
                         label = stringResource(id = R.string.create_action_tag),
                         onClick = {
-                            /* TODO: start tag creation */
+                            foldersTagsViewModel.showCreateTagDialog()
                             fabExpanded = false
                         }
                     )
@@ -170,21 +168,5 @@ fun MainScreen(navController: NavController) {
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewScreenLight() {
-    MDNotesTheme(darkTheme = false) {
-        MainScreen(navController = rememberNavController())
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewScreenDark() {
-    MDNotesTheme(darkTheme = true) {
-        MainScreen(navController = rememberNavController())
     }
 }

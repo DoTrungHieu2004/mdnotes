@@ -50,6 +50,8 @@
     <string name="dialog_edit_reminder">Edit reminder</string>
     <string name="dialog_select_time">Select time</string>
     <string name="dialog_delete_reminder">Delete reminder</string>
+    <string name="dialog_create_folder">Create folder</string>
+    <string name="dialog_create_tag">Create tag</string>
 
     <!-- Dialog content -->
     <string name="dialog_content_delete_reminder">Are you sure want to delete this reminder?\n\"%1$s\"</string>
@@ -86,6 +88,7 @@
     <string name="btn_save">Save</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_restore">Restore</string>
+    <string name="btn_create">Create</string>
 
     <!-- Section titles -->
     <string name="section_pinned_notes">Pinned</string>
@@ -97,6 +100,9 @@
     <string name="hint_note_content">Start writing in Markdown…</string>
     <string name="hint_search">Search notes…</string>
     <string name="hint_task_description">Task description</string>
+    <string name="hint_folder_name">Folder name</string>
+    <string name="hint_tag_name">Tag name</string>
+    <string name="hint_color">Color</string>
 
     <!-- Note item labels -->
     <string name="note_untitled">Untitled</string>
